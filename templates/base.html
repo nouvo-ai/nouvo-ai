@@ -1,0 +1,21 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- 공통 CSS 파일 등 -->
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    {% block head %}
+        <!-- 추가적인 head 태그 내용 -->
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+        <!-- 콘텐츠 내용 -->
+    {% endblock %}
+    
+    <!-- 추가적인 JavaScript 파일 등 -->
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

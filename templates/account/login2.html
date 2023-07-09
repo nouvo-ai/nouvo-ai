@@ -1,0 +1,139 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}
+    Log in
+{% endblock %}
+{% block extrastyle %}{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/pages/auth.css" %}">
+    {{ form.media }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block base_content %}
+    <div id="auth">
+        <div class="row h-100">
+            <div class="col-lg-5 col-12">
+                <div id="auth-left">
+                    <h2 class="auth-title">Log in.</h2>
+                    <p class="auth-subtitle mb-5">Log in with your credentials.</p>
+                    {% if form.errors and not form.non_field_errors %}
+                        <p class="errornote text-danger">
+                            {% if form.errors.items|length == 1 %}
+                                {% translate "Please correct the error below." %}{% else %}
+                                {% translate "Please correct the errors below." %}{% endif %}
+                        </p>
+                    {% endif %}
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p class="errornote text-danger">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- 가장 최근의 메시지만 출력 -->
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                {% if forloop.last %}
+                                    <li{% if message.tags %} class="errornote text-danger {{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                        <p class="text-danger">
+                            {% blocktranslate trimmed %}
+                                You are authenticated as {{ username }}, but are not authorized to
+                                access this page. Would you like to login to a different account?
+                            {% endblocktranslate %}
+                        </p>
+                    {% endif %}
+
+                    <form class="login" action="{% url 'account_login' %}" method="post" id="login-form">
+                        {% csrf_token %}
+                        <label for="{{ form.email.name }}">
+                        </label>
+                        <div class="form-group position-relative has-icon-left{% if not form.email.errors %} mb-4{% endif %}">
+                            <input type="email" id="{{ form.email.name }}"
+                            class="form-control form-control-xl{% if form.email.errors %} is-invalid{% endif %}"
+                            name="login"
+                            placeholder="E-mail address"
+                            autocomplete="email"
+                            value="{% if form.email.value %}{{ form.email.value }}{% endif %}"/>
+                            <div class="form-control-icon">
+                                <i class="bi bi-person"></i>
+                            </div>
+                        </div>
+                        {% if form.email.errors %}
+                            <div class="help-block text-danger mb-3">
+                                {{ form.email.errors }}
+                            </div>
+                        {% endif %}
+                        <label for="{{ form.password.name }}">
+                        </label>
+                        <div class="form-group position-relative has-icon-left{% if not form.password.errors %} mb-4{% endif %}">
+                            <input type="password" id="{{ form.password.name }}"
+                                   class="form-control form-control-xl{% if form.password.errors %} is-invalid{% endif %}"
+                                   placeholder="Password"
+                                   name="{{ form.password.name }}"/>
+                            <div class="form-control-icon">
+                                <i class="bi bi-shield-lock"></i>
+                            </div>
+                        </div>
+                        {% if form.password.errors %}
+                            <div class="help-block text-danger mb-3">
+                                {{ form.password.errors }}
+                            </div>
+                        {% endif %}
+                        <div class="form-check form-check-lg d-flex align-items-end">
+                            <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label text-gray-600" for="flexCheckDefault">
+                                Keep me logged in
+                            </label>
+                        </div>
+                        <input class="btn btn-primary btn-block btn-lg shadow-lg mt-3" type="submit"
+                               value="{% translate 'Log in' %}">
+
+                    </form>
+                    <div class="text-center text-md fs-5">
+                        {% url 'admin_password_reset' as password_reset_url %}
+                        {#                        {% if password_reset_url %}#}
+                        <div class="password-reset-link">
+                            <a href="{% url 'accounts:signup' %}"
+                               class="btn btn-outline-primary btn-block mt-3">
+                                {% translate 'Sign up' %}
+                            </a>
+                        </div>
+                        <div class="password-reset-link">
+                            <a href="{% url 'accounts:password_reset' %}"
+                               class="btn btn-outline-primary btn-block mt-3">
+                                {% translate 'Forgotten your password or email?' %}
+                            </a>
+                        </div>
+                        {#                        {% endif %}#}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 d-none d-lg-block">
+                <div id="auth-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

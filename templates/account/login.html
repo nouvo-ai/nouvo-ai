@@ -1,139 +1,428 @@
-{% extends "admin/base_site.html" %}
 {% load i18n static %}
+<html><head>
+    <!-- 공통 CSS 파일 등 -->
+    <link rel="stylesheet" as="style" crossorigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
 
-{% block title %}
-    Log in
-{% endblock %}
-{% block extrastyle %}{{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/pages/auth.css" %}">
-    {{ form.media }}
-{% endblock %}
+    <!-- 추가적인 head 태그 내용 -->
+    <title>nouvo.ai</title>
+</head>
+<body class="_widget-auto-layout">
 
-{% block bodyclass %}{{ block.super }} login{% endblock %}
 
-{% block usertools %}{% endblock %}
+<!-- 공통 CSS 파일 등 -->
+<link rel="stylesheet" as="style" crossorigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
 
-{% block nav-global %}{% endblock %}
+<!-- 추가적인 head 태그 내용 -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block nav-sidebar %}{% endblock %}
 
-{% block content_title %}{% endblock %}
+<meta name="robots" content="noindex, nofollow">
 
-{% block breadcrumbs %}{% endblock %}
 
-{% block base_content %}
-    <div id="auth">
-        <div class="row h-100">
-            <div class="col-lg-5 col-12">
-                <div id="auth-left">
-                    <h2 class="auth-title">Log in.</h2>
-                    <p class="auth-subtitle mb-5">Log in with your credentials.</p>
-                    {% if form.errors and not form.non_field_errors %}
-                        <p class="errornote text-danger">
-                            {% if form.errors.items|length == 1 %}
-                                {% translate "Please correct the error below." %}{% else %}
-                                {% translate "Please correct the errors below." %}{% endif %}
-                        </p>
-                    {% endif %}
-                    {% if form.non_field_errors %}
-                        {% for error in form.non_field_errors %}
-                            <p class="errornote text-danger">
-                                {{ error }}
-                            </p>
-                        {% endfor %}
-                    {% endif %}
+<link rel="stylesheet" href="https://cdn.auth0.com/ulp/react-components/1.74.3/css/main.cdn.min.css">
+<style id="custom-styles-container">
 
-                    <!-- 가장 최근의 메시지만 출력 -->
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                {% if forloop.last %}
-                                    <li{% if message.tags %} class="errornote text-danger {{ message.tags }}"{% endif %}>{{ message }}</li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
 
-                    {% if user.is_authenticated %}
-                        <p class="text-danger">
-                            {% blocktranslate trimmed %}
-                                You are authenticated as {{ username }}, but are not authorized to
-                                access this page. Would you like to login to a different account?
-                            {% endblocktranslate %}
-                        </p>
-                    {% endif %}
 
-                    <form class="login" action="{% url 'account_login' %}" method="post" id="login-form">
-                        {% csrf_token %}
-                        <label for="{{ form.email.name }}">
-                        </label>
-                        <div class="form-group position-relative has-icon-left{% if not form.email.errors %} mb-4{% endif %}">
-                            <input type="email" id="{{ form.email.name }}"
-                            class="form-control form-control-xl{% if form.email.errors %} is-invalid{% endif %}"
-                            name="login"
-                            placeholder="E-mail address"
-                            autocomplete="email"
-                            value="{% if form.email.value %}{{ form.email.value }}{% endif %}"/>
-                            <div class="form-control-icon">
-                                <i class="bi bi-person"></i>
-                            </div>
-                        </div>
-                        {% if form.email.errors %}
-                            <div class="help-block text-danger mb-3">
-                                {{ form.email.errors }}
-                            </div>
-                        {% endif %}
-                        <label for="{{ form.password.name }}">
-                        </label>
-                        <div class="form-group position-relative has-icon-left{% if not form.password.errors %} mb-4{% endif %}">
-                            <input type="password" id="{{ form.password.name }}"
-                                   class="form-control form-control-xl{% if form.password.errors %} is-invalid{% endif %}"
-                                   placeholder="Password"
-                                   name="{{ form.password.name }}"/>
-                            <div class="form-control-icon">
-                                <i class="bi bi-shield-lock"></i>
-                            </div>
-                        </div>
-                        {% if form.password.errors %}
-                            <div class="help-block text-danger mb-3">
-                                {{ form.password.errors }}
-                            </div>
-                        {% endif %}
-                        <div class="form-check form-check-lg d-flex align-items-end">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label text-gray-600" for="flexCheckDefault">
-                                Keep me logged in
-                            </label>
-                        </div>
-                        <input class="btn btn-primary btn-block btn-lg shadow-lg mt-3" type="submit"
-                               value="{% translate 'Log in' %}">
+body {
+background: #ffffff;
+font-family: ulp-font, -apple-system, BlinkMacSystemFont, Roboto, Helvetica, sans-serif;
+}
+.c664e6e32 {
+background: #ffffff;
+}
+.c7c676ee6.c8275bed0 {
+background: #D00E17;
+}
+.c7c676ee6.c1ab65f5a {
+background: #0A8852;
+}
+.c5dd156f2 {
+background-color: #10a37f;
+color: #ffffff;
+}
+.c5dd156f2 a,
+.c5dd156f2 a:visited {
+color: #ffffff;
+}
+.c770e832f {
+background-color: #0A8852;
+}
+.c7a19a100 {
+background-color: #D00E17;
+}
+@supports (mask-image: url('/static/img/branding-generic/copy-icon.svg')) {
+@supports not (-ms-ime-align: auto) {
+.c26c0803b.c06c38c9e::before {
+background-color: #D00E17;
+}
+}
+}
+.input.c9ada6d2e {
+border-color: #D00E17;
+}
+.error-cloud {
+background-color: #D00E17;
+}
+.error-fatal {
+background-color: #D00E17;
+}
+.error-local {
+background-color: #D00E17;
+}
+#alert-trigger {
+background-color: #D00E17;
+}
 
-                    </form>
-                    <div class="text-center text-md fs-5">
-                        {% url 'admin_password_reset' as password_reset_url %}
-                        {#                        {% if password_reset_url %}#}
-                        <div class="password-reset-link">
-                            <a href="{% url 'accounts:signup' %}"
-                               class="btn btn-outline-primary btn-block mt-3">
-                                {% translate 'Sign up' %}
-                            </a>
-                        </div>
-                        <div class="password-reset-link">
-                            <a href="{% url 'accounts:password_reset' %}"
-                               class="btn btn-outline-primary btn-block mt-3">
-                                {% translate 'Forgotten your password or email?' %}
-                            </a>
-                        </div>
-                        {#                        {% endif %}#}
+</style>
+<style>
+/* By default, hide features for javascript-disabled browsing */
+/* We use !important to override any css with higher specificity */
+/* It is also overriden by the styles in <noscript> in the header file */
+.no-js {
+clip: rect(0 0 0 0);
+clip-path: inset(50%);
+height: 1px;
+overflow: hidden;
+position: absolute;
+white-space: nowrap;
+width: 1px;
+}
+</style>
+<noscript>
+<style>
+/* We use !important to override the default for js enabled */
+/* If the display should be other than block, it should be defined specifically here */
+.js-required { display: none !important; }
+.no-js {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  overflow: auto;
+  position: static;
+  white-space: normal;
+  width: var(--prompt-width);
+}
+</style>
+</noscript>
+
+<style>
+@font-face {
+font-family: "ColfaxAI";
+src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2) format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff) format("woff");
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: "ColfaxAI";
+src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegularItalic.woff2) format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIRegularItalic.woff) format("woff");
+font-weight: normal;
+font-style: italic;
+}
+
+@font-face {
+font-family: "ColfaxAI";
+src: url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff) format("woff");
+font-weight: bold;
+font-style: normal;
+}
+
+@font-face {
+font-family: "ColfaxAI";
+src: url(https://cdn.openai.com/API/fonts/ColfaxAIBoldItalic.woff2) format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIBoldItalic.woff) format("woff");
+font-weight: bold;
+font-style: italic;
+}
+
+:root {
+--font-family: "ColfaxAI",-apple-system,BlinkMacSystemFont,Helvetica,sans-serif;
+--primary-color: #10a37f;
+--primary-color-no-override: #10a37f;
+--action-primary-color: #10a37f;
+--link-color: #10a37f;
+--input-box-shadow-depth: 1px;
+--page-background-color: #ffffff;
+}
+
+body {
+font-family: var(--font-family);
+background-color: var(--page-background-color);
+}
+
+.oai-wrapper {
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+min-height: 100%;
+}
+
+.oai-header {
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 32px 0 0;
+flex: 0 0 auto;
+}
+.oai-header svg {
+width: 32px;
+height: 32px;
+fill: #202123;
+}
+
+.oai-footer {
+display: flex;
+align-items: center;
+justify-content: center;
+color: #6e6e80;
+padding: 12px 0 24px;
+flex: 0 0 auto;
+}
+.oai-footer a {
+color: var(--primary-color);
+margin: 0 10px;
+}
+
+._widget-auto-layout main._widget {
+flex: 1 0 auto;
+min-height: 0;
+}
+
+main header > img:first-of-type {
+display: none;
+}
+main > section, main > section > div:first-child {
+box-shadow: none;
+}
+main header > h1 {
+font-weight: bold !important;
+font-size: 32px !important;
+}
+main a {
+font-weight: normal !important;
+}
+.ulp-alternate-action {
+text-align: center;
+}
+button[type="submit"] {
+font-family: var(--font-family);
+}
+
+
+
+
+main header > h1 {
+    margin-bottom: 0 !important;
+}
+
+
+main header > h1 + div {
+    display: none !important;
+}
+
+
+
+div:has(> form[data-provider]) {
+    display: flex;
+    flex-direction: column;
+}
+form[data-provider="google"] {
+    order: -1;
+}
+form[data-provider] {
+    margin-bottom: var(--spacing-1);
+}
+
+
+</style>
+
+
+<div class="oai-wrapper">
+<header class="oai-header">
+    <!-- <svg viewBox="" xmlns=""><path d=""></path></svg> -->
+</header><main class="_widget login-id">
+<section class="c574fc370 _prompt-box-outer cbafcaa5f" style="
+width: 454px;
+">
+<div class="c3de6a4ec c779a2612">
+
+
+
+
+<div class="c839dc723">
+<header class="cf05522ea c82e1bd34" style="
+">
+  <div title="OpenAI" id="custom-prompt-logo" style="width: auto !important; height: 60px !important; position: static !important; margin: auto !important; padding: 0 !important; background-color: transparent !important; background-position: center !important; background-size: contain !important; background-repeat: no-repeat !important"></div>
+
+  
+
+  
+    <h1 class="ce0e9ec83 ca7212e96" style="
+">StableDiffusion for Team<br>No GPU Needed</h1>
+  
+
+  <div class="ccc1139ae cc2334063">
+    <p class="c090508ca ca40be536"></p>
+  </div>
+</header>
+
+<div class="c40b2d45e c4fcfdd0d">
+  
+
+  
+    <div class="c15426521 cfdb642c0">
+      <div class="c22408f93">
+        
+      
+        <form action="{% url 'account_login' %}" method="POST" class="c44151742 _form-login-id login" data-form-primary="true" id="login-form">
+            {% csrf_token %}
+        
+          
+        
+          <div class="c15426521 cfdb642c0">
+            <div class="c22408f93">
+              
+            
+              
+                <div class="input-wrapper _input-wrapper">
+                  <div class="c26c0803b c7c5a22cc text c6887285c ceafba4a0 c5328c2e6" data-action-text="" data-alternate-action-text="">
+                    <label class="c1866d527 no-js ca14bc601 cbce566d3" for="username">
+                      Email address
+                    </label>
+                  
+                    <input class="input cb2196f68 c1a78683d" inputmode="email" name="login" id="username" type="email" value="" required="" autocomplete="email" autocapitalize="none" spellcheck="false" autofocus="">
+                  
+                    <div class="c1866d527 js-required ca14bc601 cbce566d3" data-dynamic-label-for="email" aria-hidden="true">
+                      Email address
                     </div>
+                  </div>
+                
+                  
                 </div>
+              
+            
+              
             </div>
-            <div class="col-lg-7 d-none d-lg-block">
-                <div id="auth-right">
-
+          </div><div class="c15426521 cfdb642c0" style="
+margin-top: 20px;
+">
+            <div class="c22408f93">
+              
+            
+              
+                <div class="input-wrapper _input-wrapper">
+                  <div class="c26c0803b c7c5a22cc text c6887285c ceafba4a0 c5328c2e6" data-action-text="" data-alternate-action-text="">
+                    <label class="c1866d527 no-js ca14bc601 cbce566d3" for="username">
+                      Password
+                    </label>
+                  
+                    <input class="input cb2196f68 c1a78683d" inputmode="password" name="password" id="password" type="password" value="" required="" autocomplete="password" autocapitalize="none" spellcheck="false" autofocus="">
+                  
+                    <div class="c1866d527 js-required ca14bc601 cbce566d3" data-dynamic-label-for="password" aria-hidden="true">
+                      Password
+                    </div>
+                  </div>
+                
+                  
                 </div>
+              
+            
+              
             </div>
-        </div>
+          </div>
+        
+          
+        
+          
+        
+          <input type="hidden" id="js-available" name="js-available" value="true">
+        
+          <input type="hidden" id="webauthn-available" name="webauthn-available" value="true">
+        
+          <input type="hidden" id="is-brave" name="is-brave" value="false">
+        
+          <input type="hidden" id="webauthn-platform-available" name="webauthn-platform-available" value="false">
+        
+          <div class="c813b1bdc">
+            
+              <button type="submit" name="action" value="default" class="ce8fa2415 c5dd156f2 c37335dcd c567cf9a0 _button-login-id" data-action-button-primary="true">Continue</button>
+            
+          </div>
+        </form>
+      </div>
     </div>
-{% endblock %}
+  
+
+  
+    <div class="ulp-alternate-action  _alternate-action __s16nu9">
+      <p class="c090508ca ca40be536 c955beb71">Don't have an account?
+        <a class="ccb7761ba c5f627c23" href="/u/signup/identifier?state=hKFo2SBfQlQtTEdKbDM1RV9OcXY5MkFKeU1VLTQtT0FjaDNsZKFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIFRIN2Y5T3dVY0d2d0RnSFZwX04zQV9MLXpkdXZNUktPo2NpZNkgVGRKSWNiZTE2V29USHROOTVueXl3aDVFNHlPbzZJdEc" aria-label="">Sign up</a>
+      </p>
+    <p class="c090508ca ca40be536 c955beb71">Forgot password?<a class="ccb7761ba c5f627c23" href="/u/signup/identifier?state=hKFo2SBfQlQtTEdKbDM1RV9OcXY5MkFKeU1VLTQtT0FjaDNsZKFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIFRIN2Y5T3dVY0d2d0RnSFZwX04zQV9MLXpkdXZNUktPo2NpZNkgVGRKSWNiZTE2V29USHROOTVueXl3aDVFNHlPbzZJdEc" aria-label="">Reset</a>
+      </p></div>
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+    
+  
+</div>
+</div>
+</div>
+
+
+</section>
+</main>
+<script id="client-scripts" type="text/javascript">
+!function(){var e,v,h,t,n={exports:function(n,r){var a={};function i(e,t,n,a){return e.addEventListener(t,n,a)}function o(e){return"string"==typeof e}function c(e,t){return e.getAttribute(t)}function s(e,t,n){return e.setAttribute(t,n)}return{addClass:function(e,t){if(e.classList)return e.classList.add(t);var n=e.className.split(" ");-1===n.indexOf(t)&&(n.push(t),e.className=n.join(" "))},toggleClass:function(e,t){if(e.classList)return e.classList.toggle(t);var n=e.className.split(" "),a=n.indexOf(t);-1!==a?n.splice(a,1):n.push(t),e.className=n.join(" ")},hasClass:function(e,t){return e.classList?e.classList.contains(t):-1!==e.className.split(" ").indexOf(t)},addClickListener:function(e,t){return i(e,"click",t)},addEventListener:i,getAttribute:c,getElementById:function(e){return r.getElementById(e)},getParent:function(e){return e.parentNode},isString:o,loadScript:function(e){var t=r.createElement("script");t.src=e,t.async=!0,r.body.appendChild(t)},poll:function(e){var i=e.interval||2e3,t=e.url||n.location.href,o=e.condition||function(){return!0},c=e.onSuccess||function(){},s=e.onError||function(){};return setTimeout(function a(){var r=new XMLHttpRequest;return r.open("GET",t),r.setRequestHeader("Accept","application/json"),r.onload=function(){if(200===r.status){var e="application/json"===r.getResponseHeader("Content-Type").split(";")[0]?JSON.parse(r.responseText):r.responseText;return o(e)?c():setTimeout(a,i)}if(429!==r.status)return s({status:r.status,responseText:r.responseText});var t=1e3*Number.parseInt(r.getResponseHeader("X-RateLimit-Reset")),n=t-(new Date).getTime();return setTimeout(a,i<n?n:i)},r.send()},i)},querySelector:function(e,t){return o(e)?r.querySelector(e):e.querySelector(t)},querySelectorAll:function(e,t){var n=o(e)?r.querySelectorAll(e):e.querySelectorAll(t);return Array.prototype.slice.call(n)},removeClass:function(e,t){if(e.classList)return e.classList.remove(t);var n=e.className.split(" "),a=n.indexOf(t);-1!==a&&(n.splice(a,1),e.className=n.join(" "))},removeElement:function(e){return e.remove()},setAttribute:s,removeAttribute:function(e,t){return e.removeAttribute(t)},swapAttributes:function(e,t,n){var a=c(e,t),r=c(e,n);s(e,n,a),s(e,t,r)},setGlobalFlag:function(e,t){a[e]=!!t},getGlobalFlag:function(e){return!!a[e]},preventFormSubmit:function(e){e.stopPropagation(),e.preventDefault()},matchMedia:function(e){return"function"!=typeof n.matchMedia&&n.matchMedia(e).matches},dispatchEvent:function(e,t,n){var a;"function"!=typeof Event?(a=r.createEvent("Event")).initCustomEvent(t,n,!1):a=new Event(t,{bubbles:n}),e.dispatchEvent(a)},setTimeout:setTimeout,timeoutPromise:function(e,r){return new Promise(function(t,n){var a=setTimeout(function(){n(new Error("timeoutPromise: promise timed out"))},e);r.then(function(e){clearTimeout(a),t(e)},function(e){clearTimeout(a),n(e)})})},createMutationObserver:function(e){return"undefined"==typeof MutationObserver?null:new MutationObserver(e)}}}}.exports(window,document),a={exports:function(e,t){for(var i="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_",l=new Uint8Array(256),o=0;o<i.length;o++)l[i.charCodeAt(o)]=o;function c(e){var t,n=new Uint8Array(e),a=n.length,r="";for(t=0;t<a;t+=3)r+=i[n[t]>>2],r+=i[(3&n[t])<<4|n[t+1]>>4],r+=i[(15&n[t+1])<<2|n[t+2]>>6],r+=i[63&n[t+2]];return a%3==2?r=r.substring(0,r.length-1):a%3==1&&(r=r.substring(0,r.length-2)),r}function n(){return navigator&&navigator.credentials&&"undefined"!=typeof PublicKeyCredential}return{base64URLEncode:c,base64URLDecode:function(e){var t,n,a,r,i,o=.75*e.length,c=e.length,s=0,u=new Uint8Array(o);for(t=0;t<c;t+=4)n=l[e.charCodeAt(t)],a=l[e.charCodeAt(t+1)],r=l[e.charCodeAt(t+2)],i=l[e.charCodeAt(t+3)],u[s++]=n<<2|a>>4,u[s++]=(15&a)<<4|r>>2,u[s++]=(3&r)<<6|63&i;return u.buffer},publicKeyCredentialToJSON:function e(t){if(t instanceof Array){var n=[];for(o=0;o<t.length;o+=1)n.push(e(t[o]));return n}if(t instanceof ArrayBuffer)return c(t);if(t instanceof Object){var a={};for(var r in t)a[r]=e(t[r]);return a}return t},str2ab:function(e){for(var t=new ArrayBuffer(e.length),n=new Uint8Array(t),a=0,r=e.length;a<r;a++)n[a]=e.charCodeAt(a);return t},isWebAuthnAvailable:n,isWebauthnPlatformAuthenticatorAvailableAsync:function(e){return n()?e(1e3,PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()):Promise.resolve(!1)}}}}.exports(window,document);({exports:function(e,a,r,t){var n=e(".ceb8d7bdb"),i=e("#alert-trigger"),o=e(".ce3cd4796"),c=e(".c5ff003ed"),s=!1;i&&c&&n&&t(n,function(e){var t=e.target===i,n=c.contains(e.target);return t&&!s?(a(o,"show"),void(s=!0)):t&&s||s&&!n?(r(o,"show"),void(s=!1)):void 0})}}).exports(n.querySelector,n.addClass,n.removeClass,n.addClickListener),(v="recaptcha_v2",h="recaptcha_enterprise",(e={}).exports=function(e,r,i,o,c,a){var s,u=r("div[data-recaptcha-sitekey]"),t=r("div[data-recaptcha-sitekey] input"),l=r("#ulp-recaptcha");function f(){return u.getAttribute("data-recaptcha-provider")}function d(e){return t.value=e}function p(e,t){if(e&&e.getBoundingClientRect){if(!a("(max-width: 480px)"))return l.style.transform="",void(l.style.height="");(void 0===t||isNaN(t))&&(t=1.4);var n=72*t;l.style.transform="scale("+t+")",l.style.height=n+"px",l.style.width="10px",u.clientWidth+8<e.getBoundingClientRect().width&&p(e,t-.01)}}u&&(s="recaptchaCallback_"+Math.floor(1000001*Math.random()),window[s]=function(){var e,t,n,a;delete window[s],e=function(e){switch(e){case v:return window.grecaptcha;case h:return window.grecaptcha.enterprise}}(f()),t=e.render(l,{sitekey:u.getAttribute("data-recaptcha-sitekey"),"expired-callback":function(){d(""),i(u,"c06c38c9e"),e.reset(t)},callback:function(e){d(e),o(u,"c06c38c9e")}}),n=function(e){p(e),c(window,"resize",function(){p(e)})},a=setInterval(function(){var e=r("#ulp-recaptcha iframe");if(e)return clearInterval(a),n(e)},200)},e(function(e,t,n){switch(e){case v:return"https://www.recaptcha.net/recaptcha/api.js?hl="+t+"&onload="+n;case h:return"https://www.recaptcha.net/recaptcha/enterprise.js?render=explicit&hl="+t+"&onload="+n}}(f(),u.getAttribute("data-recaptcha-lang"),s)))},e.exports)(n.loadScript,n.querySelector,n.addClass,n.removeClass,n.addEventListener,n.matchMedia),((t={}).exports=function(a,e,r,i,o,c,s,u,n,l){function f(e){var t=e.target,n=c(t);t.value||l(t,"data-autofilled")?i(n,"c5328c2e6"):o(n,"c5328c2e6")}function d(e){var t=e.target;"onAutoFillStart"===e.animationName&&(n(t,"data-autofilled",!0),u(e.target,"change",!0),r(t,"keyup",p,{once:!0}))}function p(e){var t=e.target;n(t,"data-autofilled","")}if(a("body._simple-labels"))return e(".c1866d527.no-js").forEach(function(e){o(e,"no-js")}),void e(".c1866d527.js-required").forEach(function(e){i(e,"hide")});e(".c26c0803b:not(.c5ce6bbe2):not(disabled)").forEach(function(e){i(e,"ceafba4a0");var t,n=a(e,".input");n.value&&i(e,"c5328c2e6"),r(e,"change",f),r(n,"blur",f),r(n,"animationstart",d),t=n,s(function(){t.value&&u(t,"change",!0)},100)})},t.exports)(n.querySelector,n.querySelectorAll,n.addEventListener,n.addClass,n.removeClass,n.getParent,n.setTimeout,n.dispatchEvent,n.setAttribute,n.getAttribute),{exports:function(e,t,n,a,r,i){function o(e){var t=n("submitted");a("submitted",!0),t?r(e):"apple"===i(e.target,"data-provider")&&setTimeout(function(){a("submitted",!1)},2e3)}var c=e("form");c&&c.forEach(function(e){t(e,"submit",o)})}}.exports(n.querySelectorAll,n.addEventListener,n.getGlobalFlag,n.setGlobalFlag,n.preventFormSubmit,n.getAttribute),{exports:function(t,e,n){var a=t("form._form-detect-browser-capabilities"),r=t("main.login-id"),i=t("main.signup-with-passkeys");if(a||r||i){var o=e.isWebAuthnAvailable();t("#webauthn-available").value=o?"true":"false",t("#js-available").value="true",navigator.brave?navigator.brave.isBrave().then(function(e){t("#is-brave").value=e,c()}):c()}function c(){o?e.isWebauthnPlatformAuthenticatorAvailableAsync(n).then(function(e){t("#webauthn-platform-available").value=e?"true":"false",a&&a.submit()}).catch(function(e){t("#webauthn-platform-available").value="false",a&&a.submit()}):(t("#webauthn-platform-available").value="false",a&&a.submit())}}}.exports(n.querySelector,a,n.timeoutPromise),function(){var e={};function i(e,t,n,a){var r="user-initiated-passkey-challenge",i=t("#allow-passkeys");if(i&&i.value){var o=JSON.parse(t("#config").value),c=t(".passkey-begin-button"),s=n.isWebauthnPlatformAuthenticatorAvailableAsync(a),u=t("#username"),l=o,f=new AbortController;l.publicKey.challenge=n.base64URLDecode(l.publicKey.challenge),c&&e(c,function(e){c.disabled=!0,f.abort(r),navigator.credentials.get(l).then(function(e){var t=h(e);s.then(function(e){t.isUserVerifyingPlatformAuthenticatorAvailable=e,v(JSON.stringify(t)),d()})}).catch(function(e){p()})}),window.PublicKeyCredential&&window.PublicKeyCredential.isConditionalMediationAvailable&&window.PublicKeyCredential.isConditionalMediationAvailable().then(function(e){if(e){var t=Object.assign({},l,{mediation:"conditional",signal:f.signal});navigator.credentials.get(t).then(function(e){u.blur();var t=h(e);s.then(function(e){t.isUserVerifyingPlatformAuthenticatorAvailable=e,v(JSON.stringify(t)),d()})}).catch(function(e){e!==r&&p()})}}).catch(function(e){})}function d(){t("form._form-passkey-challenge").submit()}function p(){t("#action").value="showError",t("form._form-passkey-challenge").submit()}function v(e){t("#passkey").value=e}function h(e){var t={id:e.id,rawId:n.base64URLEncode(e.rawId),type:e.type,response:{clientDataJSON:n.base64URLEncode(e.response.clientDataJSON),authenticatorData:n.base64URLEncode(e.response.authenticatorData),signature:n.base64URLEncode(e.response.signature),userHandle:e.response.userHandle?n.base64URLEncode(e.response.userHandle):null}};return e.authenticatorAttachment&&(t.authenticatorAttachment=e.authenticatorAttachment),t}}return e.exports=function(e,t,n,a,r){return e(window,"load",function(e){i(t,n,a,r)}),{configurePasskeys:i}},e.exports}()(n.addEventListener,n.addClickListener,n.querySelector,a,n.timeoutPromise),{exports:function(t,e,n){var a=e(".passkey-hidden-ui");!a||a.length<=0||window.PublicKeyCredential&&window.PublicKeyCredential.isConditionalMediationAvailable&&window.PublicKeyCredential.isConditionalMediationAvailable().then(function(e){e?a.forEach(function(e){n(e)}):a.forEach(function(e){t(e,"passkey-hidden-ui")})}).catch(function(e){a.forEach(function(e){t(e,"passkey-hidden-ui")})})}}.exports(n.removeClass,n.querySelectorAll,n.removeElement)}();
+</script>
+<footer class="oai-footer">
+    <a href="https://www.nouvo.ai/" target="_blank">Powered by <img style="width:64px;" src="{% static 'images/logo.png' %}"></a>
+</footer>
+</div>
+
+<script type="text/javascript">
+function updateHeader(text) {
+    const $h1 = document.querySelector('main header > h1');
+    if ($h1) {
+        $h1.innerText = text;
+    }
+}
+
+
+    updateHeader('StableDiffusion for Team\nNo GPU Needed');
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>
